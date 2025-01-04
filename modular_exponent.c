@@ -1,30 +1,30 @@
 #include <stdio.h>
-long long modular_exp(int b,int n,int m)
+long long modular_exp(long long base,long long power,long long modulus)
 {
-    long long res = 1;
-    while(n>0)
+    long long result = 1;
+    while(power>0)
     {
-        if(n%2!=0)
+        if(power%2!=0)
         {
-            res=((res%m)*(b%m))%m;
-            n=n-1;
+            result=((result%modulus)*(base%modulus))%modulus;
+            power=power-1;
         }
         else{
-        b=((b%m)*(b%m))%m;
-        n=n/2;
+        base=((base%modulus)*(base%modulus))%modulus;
+        power=power/2;
         }
     }
-    return res;
+    return result;
 }
 int main() {
-    long long b,n,m;
+    long long base,power,modulus;
     printf("Enter the base: ");
-    scanf("%lld",&b);
+    scanf("%lld",&base);
     printf("Enter the power: ");
-    scanf("%lld",&n);
+    scanf("%lld",&power);
     printf("Enter the Modulus: ");
-    scanf("%lld",&m);
-    long long ans=modular_exp(b,n,m);
+    scanf("%lld",&modulus);
+    long long ans=modular_exp(base,power,modulus);
     printf("%lld\n",ans);
 }
 
