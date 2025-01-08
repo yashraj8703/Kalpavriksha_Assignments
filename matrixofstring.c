@@ -16,11 +16,9 @@ int main()
         printf("Column size should be between 1 to 101.\n");
         return 1;
     }
-    printf("Enter the names:\n");
     getchar();  
     char name_matrix[row][col][MAX_STRING_LEN];
     printf("Enter the names:\n");
-    getchar();
     for (int i = 0; i < row; i++)
     {
         for (int j = 0; j < col; j++)
