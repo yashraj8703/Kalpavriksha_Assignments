@@ -4,18 +4,19 @@
 int main()
 {
     int row, col;
-    printf("Enter number of rows:");
+    printf("Enter number of rows: ");
     scanf("%d", &row);
-    if(row < 1 || row > 10) {
-        printf("Row size should be between 1 to 10 \n");
+    if (row < 1 || row > 10) {
+        printf("Row size should be between 1 to 10.\n");
         return 1;
     }
-    printf("Enter number of columns:");
+    printf("Enter number of columns: ");
     scanf("%d", &col);
-    if(col < 1 || col > 101) {
-        printf("Column size should be between 1 to 101 \n");
+    if (col < 1 || col > 101) {
+        printf("Column size should be between 1 to 101.\n");
         return 1;
     }
+    printf("Enter the names:\n");
     getchar();  
     char name_matrix[row][col][MAX_STRING_LEN];
     printf("Enter the names:\n");
