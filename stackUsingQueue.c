@@ -1,94 +1,100 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Stack {
-    int top;
+struct Queue{
     int size;
+    int front;
+    int rear;
     int *arr;
 };
-
-struct Stack* CreateStack(int size) {
-    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
-    stack->top = -1;
-    stack->size = size;
-    stack->arr = (int*)malloc(stack->size * sizeof(int));  // Fix: store the allocated memory
-    return stack;
+struct Queue* createQueue(int size)
+{
+    struct Queue* Queue=(struct Queue*)malloc(sizeof(struct Queue));
+    Queue->size=size;
+    Queue->front=-1;
+    Queue->rear=-1;
+    Queue->arr=(int*)malloc(Queue->size*sizeof(int));
+    return Queue;
 }
 
-int isEmpty(struct Stack* stack) {
-    return stack->top == -1;
+int isEmpty(struct Queue* Queue)
+{
+    return Queue->front==-1;
 }
-
-int isFull(struct Stack* stack) {
-    return stack->top == stack->size - 1;
+int isFull(struct Queue* Queue)
+{
+    return Queue->rear == Queue->size - 1;
 }
-
-void Push(struct Stack* stack, int data) {
-    if (isFull(stack)) {
-        printf("Stack overflow\n");
+void Push(struct Queue* Queue,int data)
+{
+    if(isFull(Queue))
+    {
         return;
     }
-    stack->top++;
-    stack->arr[stack->top] = data;
-}
-
-int Pop(struct Stack* stack) {
-    if (isEmpty(stack)) {
-        printf("Stack underflow\n");
-        return -1; 
+    if(Queue->front==-1)
+    {
+        Queue->front=0;
     }
-    int value = stack->arr[stack->top];
-    stack->top--;
-    return value;
+    Queue->rear++;
+    Queue->arr[Queue->rear]=data;
 }
-
-void PrintStack(struct Stack* stack) {
-    if (isEmpty(stack)) {
-        printf("Stack is empty\n");
+int pop(struct Queue* Queue)
+{
+    if(isEmpty(Queue))
+    {
+        return -1;
+    }
+    int data=Queue->arr[Queue->front];
+    Queue->front++;
+    if(Queue->front>Queue->rear)
+    {
+        Queue->front=-1;
+        Queue->rear=-1;
+    }
+    return data;
+}
+void PrintQueue(struct Queue* Queue) {
+    if (isEmpty(Queue)) {
+        printf("Queue is Empty\n");
         return;
     }
-    printf("Stack elements: ");
-    for (int i = 0; i <= stack->top; i++) {
-        printf("%d ", stack->arr[i]);
+    for (int i = Queue->front; i <= Queue->rear; i++) {
+        printf("%d ", Queue->arr[i]);
     }
     printf("\n");
 }
-void Enqueue(struct Stack* inputStack,int data)
+void stackPush(struct Queue* Queue1,int data)
 {
-    Push(inputStack,data);
+    Push(Queue1,data);
 }
-int Deque(struct Stack* inputStack,struct Stack* outputStack)
+int stackPop(struct Queue* Queue1,struct Queue* Queue2)
 {
-    
-    if (isEmpty(outputStack)) {
-        while (!isEmpty(inputStack)) {
-            int data = Pop(inputStack);
-            Push(outputStack, data);
-        }
-    }
-    if (isEmpty(outputStack)) {
-        printf("Queue is empty\n");
+    if (isEmpty(Queue1)) {
+        printf("Stack is empty\n");
         return -1; 
     }
-    return Pop(outputStack); 
+    int size=Queue1->rear-Queue1->front+1;
+    for(int i=0;i<size-1;i++)
+    {
+        int data=pop(Queue1);
+        Push(Queue2,data);
+    }
+    int popdata=pop(Queue1);
+    while (!isEmpty(Queue2)) {
+        int data = pop(Queue2);
+        Push(Queue1, data);
+    }
+    return popdata;
+}
+int main()
+{
+    struct Queue* Queue1=createQueue(3);
+    struct Queue* Queue2=createQueue(3);
+    stackPush(Queue1,10);
+    stackPush(Queue1,20);
+    stackPush(Queue1,30);
+    PrintQueue(Queue1);  
+    printf("Popped: %d\n", stackPop(Queue1, Queue2)); 
+    PrintQueue(Queue1);  
 }
 
-
-int main() {
-    struct Stack* inputStack = CreateStack(5);
-    struct Stack* outputStack= CreateStack(5);
-
-    Enqueue(inputStack,5);
-    Enqueue(inputStack,4);
-    Enqueue(inputStack,3);
-    Enqueue(inputStack,2);
-    Enqueue(inputStack,1);
-    PrintStack(inputStack);
-
-    int val=Deque(inputStack,outputStack);
-    printf("%d",val);
-    
-    
-
-    return 0;
-}
